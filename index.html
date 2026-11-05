@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Keller ISD | TIA Take-Home Pay Estimator</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#172235;background:#f5f7fb;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0}header{background:#102b4e;color:#fff;padding:28px 20px;border-bottom:5px solid #d5aa58}main{max-width:840px;margin:32px auto;padding:0 18px 40px}h1{margin:0 0 6px;font-size:clamp(1.55rem,4vw,2.3rem)}h2{font-size:1.16rem;margin:0 0 16px}p{line-height:1.55}.subtitle{margin:0;color:#e4eaf1}.panel{background:#fff;border:1px solid #dee5ee;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 4px 18px #102b4e0a}.hint,.fine{font-size:.86rem;color:#566374}.fine{line-height:1.55}.field{display:flex;flex-direction:column;gap:7px}.field label{font-weight:650}input{font:inherit;border:1px solid #aab8c9;border-radius:8px;padding:12px;width:100%;max-width:320px;background:white;color:#142238}input:focus-visible{outline:3px solid #d5aa58;outline-offset:2px}.money{font-variant-numeric:tabular-nums}.summary{background:#eaf1fa;border:1px solid #c4d6ec;border-radius:12px;padding:22px;margin:18px 0 8px}.eyebrow{font-size:.8rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:#244b78}.total{font-size:clamp(2rem,6vw,3.4rem);font-weight:800;color:#0c4d3a;margin-top:5px}.line{display:flex;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #e5eaf0}.line:last-child{border-bottom:0}.line span:last-child{text-align:right;white-space:nowrap}.subhead{margin-top:22px;font-weight:750;color:#253b57}.warning{border-left:4px solid #b17d24;background:#fff8eb;padding:12px 14px;border-radius:4px}.error{color:#9c2323;min-height:1.2em}footer{text-align:center;color:#566374;font-size:.82rem;line-height:1.5;margin:22px auto;max-width:720px}.pill{font-size:.73rem;font-weight:750;border-radius:30px;background:#fff0c9;color:#694815;padding:4px 9px;vertical-align:middle}@media(max-width:580px){.panel{padding:18px}header{padding:22px 18px}}
+  </style>
+</head>
+<body>
+<header><div style="max-width:840px;margin:auto"><h1>Keller ISD TIA Take-Home Pay Estimator</h1><p class="subtitle">Estimate your Teacher Incentive Allotment payment. No login or employee information required.</p></div></header>
+<main>
+<section class="panel">
+  <h2>Enter your TIA allotment</h2>
+  <div class="field"><label for="award">Gross allotment amount ($)</label><input id="award" type="number" min="0" max="10000000" step="0.01" inputmode="decimal" placeholder="Example: 10000" autocomplete="off"><div class="hint">Enter your total award before the district's 10% retention.</div></div>
+  <p id="inputError" class="error" role="alert"></p>
+  <div class="summary" aria-live="polite"><div class="eyebrow">Estimated take-home pay</div><div id="takehome" class="total money">$0.00</div><div class="hint">An estimate based on standard payroll deductions.</div></div>
+  <div class="subhead">Calculation breakdown</div>
+  <div class="line"><span>Original TIA allotment</span><span id="original" class="money">$0.00</span></div>
+  <div class="line"><span>District retention (10%)</span><span id="retention" class="money">−$0.00</span></div>
+  <div class="line"><strong>Amount available for payroll</strong><strong id="available" class="money">$0.00</strong></div>
+  <div class="subhead">Estimated employer costs</div>
+  <div class="line"><span>Employer Medicare (1.45%)</span><span id="employerMedicare" class="money">−$0.00</span></div>
+  <div class="line"><span>Employer TRS-Care (0.75%)</span><span id="employerCare" class="money">−$0.00</span></div>
+  <div class="line"><span>Statutory minimum (8.25%)</span><span id="statutory" class="money">−$0.00</span></div>
+  <div class="line"><span>Non-OASDI (2.00%)</span><span id="nonOasdi" class="money">−$0.00</span></div>
+  <div class="line"><strong>Total employer costs (12.45%)</strong><strong id="employerTotal" class="money">−$0.00</strong></div>
+  <div class="line"><strong>Estimated employee gross payment</strong><strong id="gross" class="money">$0.00</strong></div>
+  <div class="subhead">Estimated employee deductions</div>
+  <div class="line"><span>Federal income tax (22.00%)</span><span id="federal" class="money">−$0.00</span></div>
+  <div class="line"><span>Employee Medicare (1.45%)</span><span id="medicare" class="money">−$0.00</span></div>
+  <div class="line"><span>Employee TRS-Care (0.65%)</span><span id="care" class="money">−$0.00</span></div>
+  <div class="line"><span>Employee TRS retirement (8.25%)</span><span id="trs" class="money">−$0.00</span></div>
+  <div class="line"><strong>Total employee deductions (32.35%)</strong><strong id="employeeTotal" class="money">−$0.00</strong></div>
+</section>
+<section class="panel"><h2>Important information <span class="pill">Estimate</span></h2>
+  <p class="warning"><strong>Note, the percentages utilized reflect an estimate based on standard payroll deductions. Your actual dollar amount may vary depending on your individual circumstances.</strong></p>
+  <p class="fine">Calculation method: 10% of the original allotment is retained by the district. The remaining 90% covers employee gross compensation plus the employer costs listed above. Each employer cost is estimated as a percentage of employee gross compensation; employee deductions are then estimated as percentages of employee gross compensation. Federal withholding is approximated as 22% of gross compensation, without adjusting the taxable wage base for pre-tax deductions. The deduction percentages are based on estimates confirmed by Keller ISD Payroll; actual withholding and payment amounts may vary.</p>
+  <p class="fine">All calculations occur in your browser. This calculator does not save or submit the award amount, and it uses no cookies, analytics, database, browser storage, or external scripts. Standard website-hosting requests and logs may still occur.</p>
+</section>
+<footer>Keller ISD TIA Take-Home Pay Estimator. Actual payroll and take-home payment may differ.</footer>
+</main>
+<script>
+(() => {
+  'use strict';
+  const RATES = Object.freeze({
+    district: 0.10,
+    employerMedicare: 0.0145,
+    employerCare: 0.0075,
+    statutory: 0.0825,
+    nonOasdi: 0.02,
+    federal: 0.22,
+    medicare: 0.0145,
+    care: 0.0065,
+    trs: 0.0825
+  });
+  const el = id => document.getElementById(id);
+  const fmt = n => n.toLocaleString('en-US',{style:'currency',currency:'USD'});
+  const out = (id,n,negative=false) => {el(id).textContent=(negative?'−':'')+fmt(Math.max(0,n));};
+  function update(){
+    const raw = el('award').value;
+    const number = Number(raw);
+    const valid = raw.trim()==='' || (Number.isFinite(number) && number>=0 && number<=10000000);
+    el('inputError').textContent = valid ? '' : 'Please enter an allotment between $0 and $10,000,000.';
+    const award = valid && number>0 ? number : 0;
+    const retained = award * RATES.district;
+    const available = award - retained;
+    const totalEmployerRate = RATES.employerMedicare + RATES.employerCare + RATES.statutory + RATES.nonOasdi;
+    // Employer percentages are applied to employee gross pay, funded by the remaining 90%.
+    const gross = available / (1 + totalEmployerRate);
+    const employerMedicare = gross * RATES.employerMedicare;
+    const employerCare = gross * RATES.employerCare;
+    const statutory = gross * RATES.statutory;
+    const nonOasdi = gross * RATES.nonOasdi;
+    const employerTotal = employerMedicare + employerCare + statutory + nonOasdi;
+    // Simplified employee withholding: percentages of gross pay (no pre-tax wage adjustments).
+    const federal = gross * RATES.federal;
+    const medicare = gross * RATES.medicare;
+    const care = gross * RATES.care;
+    const trs = gross * RATES.trs;
+    const employeeTotal = federal + medicare + care + trs;
+    const net = gross - employeeTotal;
+    out('original',award);out('retention',retained,true);out('available',available);
+    out('employerMedicare',employerMedicare,true);out('employerCare',employerCare,true);
+    out('statutory',statutory,true);out('nonOasdi',nonOasdi,true);
+    out('employerTotal',employerTotal,true);out('gross',gross);
+    out('federal',federal,true);out('medicare',medicare,true);
+    out('care',care,true);out('trs',trs,true);out('employeeTotal',employeeTotal,true);
+    el('takehome').textContent = fmt(Math.max(0,net));
+  }
+  el('award').addEventListener('input',update);
+  update();
+})();
+</script>
+</body>
+</html>
